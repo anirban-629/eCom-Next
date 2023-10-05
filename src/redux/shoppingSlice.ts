@@ -25,8 +25,54 @@ export const shoppingSlice = createSlice({
         existingProduct.quantity += action.payload.quantity;
       } else state.productData.push(action.payload);
     },
+    increaseQuantity: (state, action) => {
+      const existingProduct = state.productData.find(
+        (item: Product) => item._id === action.payload._id
+      );
+      existingProduct && existingProduct.quantity++;
+    },
+    decreaseQuantity: (state, action) => {
+      const existingProduct = state.productData.find(
+        (item: Product) => item._id === action.payload._id
+      );
+      if (existingProduct?.quantity === 1) {
+        existingProduct.quantity = 1;
+      } else {
+        existingProduct && existingProduct.quantity--;
+      }
+    },
+    deleteProduct: (state, action) => {
+      state.productData = state.productData.filter(
+        (item) => item._id !== action.payload
+      );
+    },
+    resetCart: (state) => {
+      state.productData = [];
+    },
+    addUser: (state, action) => {
+      state.userInfo = action.payload;
+    },
+    deleteUser: (state) => {
+      state.userInfo = null;
+    },
+    saveOrder: (state, action) => {
+      state.orderData = action.payload;
+    },
+    resetOrder: (state) => {
+      state.orderData = [];
+    },
   },
 });
 
-export const { addToCart } = shoppingSlice.actions;
+export const {
+  addToCart,
+  increaseQuantity,
+  decreaseQuantity,
+  deleteProduct,
+  resetCart,
+  addUser,
+  deleteUser,
+  resetOrder,
+  saveOrder,
+} = shoppingSlice.actions;
 export default shoppingSlice.reducer;
